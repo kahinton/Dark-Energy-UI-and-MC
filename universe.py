@@ -1,10 +1,17 @@
 from __future__ import division
-import numpy as np
-from scipy.interpolate import InterpolatedUnivariateSpline
+try:
+    import numpy as np
+except ImportError:
+    print('This file requires the numpy package to run properly. Please see the readme for instructions on how to install this package.')
+try:
+    from scipy.interpolate import InterpolatedUnivariateSpline
+except ImportError:
+    print('This file requires the scipy package to run properly. Please see the readme for instructions on how to install this package.')
 import os
+import sys
 
 # Creating the Splines
-lok = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__))) 
+lok = os.path.dirname(sys.argv[0]) 
 zdat = np.genfromtxt(lok+'/Growth/PC_1234.dat','float', usecols = 0, skip_header =1)
 a1 = np.genfromtxt(lok+'/Growth/PC_1234.dat','float', usecols = 1, skip_header =1)
 a2 = np.genfromtxt(lok+'/Growth/PC_1234.dat','float', usecols = 2, skip_header =1)

@@ -1,10 +1,16 @@
 from __future__ import division
 import multiprocessing as mp
 import os
-import numpy as np
+import sys
 from random import uniform
-from sympy import *
-import time
+try:
+    import numpy as np
+except ImportError:
+    print('This file requires the numpy package to run properly. Please see the readme for instructions on how to install this package.')
+try:
+    from sympy import *
+except ImportError:
+    print('This file requires the sympy package to run properly. Please see the readme for instructions on how to install this package.')
 from universe import Universe, spl1, spl2, ParFile, ResFile, GroFile
 
 
@@ -27,7 +33,7 @@ name = 'Quin_Test_Ence'
 # results will be presented in the UI, so the final number may be less than this
 # amount
 
-number = 10000
+number = 4
 
 # The line below defines symbols needed for the function g, DO NOT CHANGE  IT
 Yi,ci,yi,xi,u,Lami = symbols('Yi ci yi xi u Lami')
@@ -77,12 +83,11 @@ g2 = simplify(diff(g, Yi))
 g3 = simplify(diff(g2, Yi))
 Aterm = simplify((g+(5*Yi*g2)+(2*(Yi**2)*g3))**-1.0)
 
-loc = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+loc = os.path.dirname(sys.argv[0])
 
 ParFile(loc,name, str(g), (str(g2)), (str(g3)), (str(Aterm)), x1min, x1max,x2min, x2max, y1min, y1max,y2min, y2max,c1min, c1max,c2min, c2max, umin, umax, fields)
 
 Tests = np.array([])
-
 
 if GC != "True":
     for num in xrange(number):
@@ -94,7 +99,6 @@ else:
         x2 = uniform(x2min,x2max)
         Tests[num] = Universe(x1,x2,uniform(.5,1.0)*x1,uniform(.5,1.0)*x2,uniform(c1min,c1max),uniform(c2min,c2max),uniform(umin,umax),fields,str(g),str(g2),str(g3),str(Aterm),spl1,spl2)
 
-
 def Runner(N):
     N.Run(0)
     return N
@@ -104,9 +108,7 @@ Range = np.arange(0,number,1)
 if __name__=='__main__':
     mp.freeze_support()
     pool = mp.Pool()
-    t0 = time.clock()
     Tests = pool.map(Runner,Tests)
-    print((time.clock()-t0)/60.0)
     pool.close()
     pool.join()
     Data = mp.Process(target = ResFile, args = (loc, name, fields, Tests))
