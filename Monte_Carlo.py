@@ -8,10 +8,10 @@ try:
 except ImportError:
     print('This file requires the numpy package to run properly. Please see the readme for instructions on how to install this package.')
 try:
-    from sympy import *
+    from sympy import symbols, simplify, diff
 except ImportError:
     print('This file requires the sympy package to run properly. Please see the readme for instructions on how to install this package.')
-from universe import Universe, spl1, spl2, ParFile, ResFile, GroFile
+from monte_pack import Universe, spl1, spl2, ParFile, ResFile, GroFile
 
 
 ###################################################################################
@@ -33,7 +33,7 @@ name = 'Quin_Test_Ence'
 # results will be presented in the UI, so the final number may be less than this
 # amount
 
-number = 4
+number = 1000
 
 # The line below defines symbols needed for the function g, DO NOT CHANGE  IT
 Yi,ci,yi,xi,u,Lami = symbols('Yi ci yi xi u Lami')
@@ -45,7 +45,7 @@ Yi,ci,yi,xi,u,Lami = symbols('Yi ci yi xi u Lami')
 
 g = 1-(ci/Yi)
 
-# Enter the number of late time fields used in each model
+# Enter the total number of fields used in each model
 
 fields = 20
 
@@ -97,7 +97,8 @@ else:
     for num in xrange(number):
         x1 = uniform(x1min,x1max)
         x2 = uniform(x2min,x2max)
-        Tests[num] = Universe(x1,x2,uniform(.5,1.0)*x1,uniform(.5,1.0)*x2,uniform(c1min,c1max),uniform(c2min,c2max),uniform(umin,umax),fields,str(g),str(g2),str(g3),str(Aterm),spl1,spl2)
+        Q = Universe(x1,x2,uniform(.5,1.0)*x1,uniform(.5,1.0)*x2,uniform(c1min,c1max),uniform(c2min,c2max),uniform(umin,umax),fields,str(g),str(g2),str(g3),str(Aterm),spl1,spl2)
+        Tests = np.append(Tests, Q)
 
 def Runner(N):
     N.Run(0)
