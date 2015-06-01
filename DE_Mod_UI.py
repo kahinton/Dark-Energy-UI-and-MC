@@ -27,26 +27,26 @@ class DE_Mod_Gen(Tk):
         self.IntroStr = StringVar()
         self.Welcome = Label(self.Home, textvariable = self.IntroStr, anchor = "center", fg = "black")
         self.Welcome.grid(column = 0, row = 0, columnspan = 4)
-        self.IntroStr.set(u"Welcome to DE_Mod_Gen! From here you can select to run a single model of your choice with the")
+        self.IntroStr.set(u"Welcome to DE_Mod_Gen! Using the buttons below you may choose to run a single instance of any")
         
         self.IntroStr2 = StringVar()
         self.Welcome2 = Label(self.Home, textvariable = self.IntroStr2, anchor = "center", fg = "black")
         self.Welcome2.grid(column = 0, row = 1, columnspan = 4, pady = 3)
-        self.IntroStr2.set(u"parameters set as you see fit, see the results of many models run with the MC Generator, or")
+        self.IntroStr2.set(u"model previously run with the Monte Carlo generator, or analyze the bulk results from any of those")
         
         self.IntroStr3 = StringVar()
         self.Welcome3 = Label(self.Home, textvariable = self.IntroStr3, anchor = "center", fg = "black")
         self.Welcome3.grid(column = 0, row = 2, columnspan = 4, pady = 3)
-        self.IntroStr3.set(u"you can open the MC Generator code to explore your own models")
+        self.IntroStr3.set(u"tests. You can also open the Monte Carlo code if you have the appropriate program.")
         
         self.SinglePage = Button(self.Home, text = u"Run a Single Model", command = self.Single1, width = 35)
         self.SinglePage.grid(column = 2, row = 3, padx = 10, pady = 30)
         
-        self.MontePage = Button(self.Home, text = u"Open Monte Carlo Generator Code", command = self.MonteOpen, width = 35)
-        self.MontePage.grid(column = 2, row = 5, padx = 10, pady = 30)
-        
         self.ResultPage = Button(self.Home, text = u"Results from Monte Carlo Generator", command = self.Result1, width = 35)
         self.ResultPage.grid(column = 2, row = 4, padx = 10, pady = 30)
+                
+        self.MontePage = Button(self.Home, text = u"Open Monte Carlo Code (requires iPython)", command = self.MonteOpen, width = 35)
+        self.MontePage.grid(column = 2, row = 5, padx = 10, pady = 30)        
         
         # Create window for running a single model
       
@@ -127,7 +127,7 @@ class DE_Mod_Gen(Tk):
         
         self.RLabel_Name = ['Exp1', 'Exp2','Exp3','Mod1','X1','Y1','Mod2','X2','Y2']
         self.RLabel_Grid = np.array([[0,0,5],[0,1,5],[0,2,5],[0,3,1],[0,5,1],[0,6,1],[3,3,1],[3,5,1],[3,6,1]])
-        self.RLabel_Vars = ['From this window you can analyze the results from the Monte Carlo tests of your choice.','The selected parameters can be plotted in (x1,y1) and (x2,y2) planes. Available parameters are', 'w_0, w_a, w_p, w_DE, Omega_M, Omega_DE, x1, x2, y1, y2, c1, c2, u, Lambda_1, Lambda_2, and n','First Model','Graph 1 x axis','Graph 1 y axis','Second Model','Graph 2 x axis','Graph 2 y axis']
+        self.RLabel_Vars = ['From this window you can analyze the results from the Monte Carlo tests of your choice.','The selected parameters can be plotted in (x1,y1) and (x2,y2) planes. Available parameters are', 'w_0, w_a, w_p, w_DE, Omega_M, Omega_DE, x1, x2, y1, y2, c1, c2, u, Lambda_1, Lambda_2, and n','First Model','Graph 1 x-axis','Graph 1 y-axis','Second Model','Graph 2 x-axis','Graph 2 y-axis']
         
         for b in xrange(len(self.RLabel_Name)):
             exec('self.Result'+str(self.RLabel_Name[b])+'Var = StringVar()')
@@ -157,13 +157,14 @@ class DE_Mod_Gen(Tk):
          # Create the Entry objects in the Result window   
           
         self.REntry_Name = ['XAxis1', 'YAxis1','XAxis2','YAxis2']
+        self.REntry_Exam = ['e.g. w_0', 'e.g. w_a', 'e.g. np.log10(x1)', 'e.g. x1/y1']
         self.REntry_Grid = np.array([[1,5],[1,6],[4,5],[4,6]])
         
         for k in xrange(len(self.REntry_Name)):
             exec('self.Result'+str(self.REntry_Name[k])+'Var = StringVar()')
             exec('self.Result'+str(self.REntry_Name[k])+'Ent = Entry(self.Result, textvariable = self.Result'+str(self.REntry_Name[k])+'Var)')
             exec('self.Result'+str(self.REntry_Name[k])+'Ent.grid(column = '+str(self.REntry_Grid[k,0])+', row = '+str(self.REntry_Grid[k,1])+', sticky = "EW", pady = 10)')
-            exec('self.Result'+str(self.REntry_Name[k])+'Var.set(u"Python Input")')
+            exec('self.Result'+str(self.REntry_Name[k])+'Var.set(u"'+self.REntry_Exam[k]+'")')
         
         # Bottons to get the results of the query or to go back to the Home window
         
@@ -243,6 +244,14 @@ class DE_Mod_Gen(Tk):
         
         model = name.rstrip("']")
         model = model.lstrip("'[")
+        model = str(model)
+        name = ''
+        for i in xrange(len(model)):
+            if model[i] == '_':
+                name += ' '
+            else:
+                name += model[i]
+                
         __location__ = os.path.dirname(sys.argv[0]) 
         loc = os.path.join(__location__, 'Data/')
         
@@ -255,10 +264,10 @@ class DE_Mod_Gen(Tk):
             
         py.figure(int(e))
         py.plot(A, B, 'b.')
-        py.xlabel(c, fontsize = 40)
-        py.ylabel(d, fontsize = 40)
-        py.title('Selected Information from '+str(model), fontsize = 40)
-        py.tick_params(labelsize = 20)
+        py.xlabel(c, fontsize = 55)
+        py.ylabel(d, fontsize = 55)
+        py.title('Results from '+str(name), fontsize = 55)
+        py.tick_params(labelsize = 35, size = 15, width = 5, top = 0, right = 0)
             
         py.show()
         

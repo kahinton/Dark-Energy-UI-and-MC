@@ -11,7 +11,7 @@ try:
     from sympy import symbols, simplify, diff
 except ImportError:
     print('This file requires the sympy package to run properly. Please see the readme for instructions on how to install this package.')
-from monte_pack import Universe, spl1, spl2, ParFile, ResFile, GroFile
+from monte_pack import Universe, e1, e2, ParFile, ResFile, GroFile
 
 
 ###################################################################################
@@ -27,7 +27,7 @@ from monte_pack import Universe, spl1, spl2, ParFile, ResFile, GroFile
 
 # Please name the model you wish to run. This name will also be used in the UI.
 
-name = 'Quin_Test_Ence'
+name = 'Test_ws'
 
 # Set the number of models to test. Note that only models which produce valid
 # results will be presented in the UI, so the final number may be less than this
@@ -91,13 +91,13 @@ Tests = np.array([])
 
 if GC != "True":
     for num in xrange(number):
-        Q = Universe(uniform(x1min,x1max),uniform(x2min,x2max),uniform(y1min,y1max),uniform(y2min,y2max),uniform(c1min,c1max),uniform(c2min,c2max),uniform(umin,umax),fields,str(g),str(g2),str(g3),str(Aterm),spl1,spl2) 
+        Q = Universe(uniform(x1min,x1max),uniform(x2min,x2max),uniform(y1min,y1max),uniform(y2min,y2max),uniform(c1min,c1max),uniform(c2min,c2max),uniform(umin,umax),fields,str(g),str(g2),str(g3),str(Aterm),e1,e2) 
         Tests = np.append(Tests, Q)
 else:
     for num in xrange(number):
         x1 = uniform(x1min,x1max)
         x2 = uniform(x2min,x2max)
-        Q = Universe(x1,x2,uniform(.5,1.0)*x1,uniform(.5,1.0)*x2,uniform(c1min,c1max),uniform(c2min,c2max),uniform(umin,umax),fields,str(g),str(g2),str(g3),str(Aterm),spl1,spl2)
+        Q = Universe(x1,x2,uniform(.5,1.0)*x1,uniform(.5,1.0)*x2,uniform(c1min,c1max),uniform(c2min,c2max),uniform(umin,umax),fields,str(g),str(g2),str(g3),str(Aterm),e1,e2)
         Tests = np.append(Tests, Q)
 
 def Runner(N):
