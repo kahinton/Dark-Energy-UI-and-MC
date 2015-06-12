@@ -1,6 +1,6 @@
-Welcome to DE_Mod_Gen! This piece of software is designed to allow the user to test hypothetical dark enery models in the framework of an effective field theory with an arbitrary
-number of fields. The following sections of this file should guide you through the setup and use of this program. For further information please reference the paper associated with
-this code at (paper url after it has been put on arxiv).
+Welcome to DE_Mod_Gen! This piece of software is designed to allow the user to test dynamical dark enery models in the framework of an effective field theory with an arbitrary
+number of fields. The following sections of this file will guide you through the setup and use of this program. For further information please reference the paper associated with
+this code at (paper url after it has been put on arxiv), and please be sure to reference Hinton et al. and this repository if you use the code in your research.
 
 Section 1: System Requirements
 
